@@ -1,48 +1,48 @@
-//segunda preentrega-js
-
-/* hacer un array con nombres de forma de que le diga en que posicion va y despues de quien*/
-
-
-// Array para almacenar los turnos de la semana
 const turnosSemanales = [];
 
-function reservarTurno(horario, nombreCompleto) {
-   if (horario < 1 || horario > 5) {
-      alert('Número de horario no válido. Debe ser un número entre 1 y 5.');
+turnosSemanales[0] = { nombre: 'Persona1', apellido: 'Apellido1', dia: 'lunes', hora: 1 };
+turnosSemanales[2] = { nombre: 'Persona2', apellido: 'Apellido2', dia: 'miércoles', hora: 3 };
+
+/// ejemplos para corroborar que no pueden a ver 2 turnos iguales
+
+
+
+document.getElementById('turnoForm').addEventListener('submit', function (event) {
+   event.preventDefault();
+
+   const nombre = document.getElementById('nombre').value;
+   const apellido = document.getElementById('apellido').value;
+   const dia = document.getElementById('dia').value;
+   const hora = document.getElementById('hora').value;
+
+   if (hora < 1 || hora > 5) {
+      Swal.fire('Número de horario no válido. Debe ser un número entre 1 y 5.');
       return;
    }
 
    const diasSemana = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes'];
 
-   // Verificar si el horario ya está reservado
-   if (turnosSemanales[horario - 1]) {
-      alert(`El turno para el día ${diasSemana[horario - 1]} ya está reservado.`);
+   if (turnosSemanales[hora - 1]) {
+      Swal.fire(`El turno para el día ${diasSemana[hora - 1]} ya está reservado.`);
    } else {
-      // Crear objeto para almacenar la información del turno
       const turno = {
-         nombreCompleto: nombreCompleto,
-         horario: horario,
-         fecha: new Date().toLocaleDateString(),
+         nombre: nombre,
+         apellido: apellido,
+         dia: dia,
+         hora: hora
       };
 
-      // Almacenar el turno en el array
-      turnosSemanales[horario - 1] = turno;
+      Swal.fire({
+         icon: 'success',
+         title: 'Turno solicitado',
+         text: `Nombre: ${turno.nombre} Apellido: ${turno.apellido} Día: ${turno.dia} Hora: ${turno.hora}`,
+      });
 
-      alert(`Turno reservado para el día $   {diasSemana[horario - 1]} a las ${horario} PM.`);
-   }
-}
+      const listaTurnos = document.getElementById('listaTurnos');
+      const nuevoTurno = document.createElement('li');
+      nuevoTurno.textContent = `Nombre: ${turno.nombre}, Apellido: ${turno.apellido}, Día: ${turno.dia}, Hora: ${turno.hora}`;
+      listaTurnos.appendChild(nuevoTurno);
 
-// Solicitar información al usuario
-let horario = parseFloat(prompt('Ingrese su horario de 1 a 5'));
-let nombreyapellido = prompt('Nombre y apellido');
-
-// Reservar el turno
-reservarTurno(horario, nombreyapellido);
-
-// Mostrar la información de los turnos reservados
-console.log('Turnos reservados:');
-turnosSemanales.forEach((turno, index) => {
-   if (turno) {
-      console.log(`Día: ${diasSemana[index]}, Hora: ${turno.horario} PM, Nombre: ${turno.nombreCompleto}, Fecha: ${turno.fecha}`);
+      turnosSemanales[hora - 1] = turno;
    }
 });
